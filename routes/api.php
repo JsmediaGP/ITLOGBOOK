@@ -23,17 +23,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 /// Authentication route
-Route::post('/Auth/login', [AuthController::class, 'login']);
+Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/organization/register', [SupervisorController::class, 'register']);
 Route::post('/student/register', [StudentController::class, 'register']);
-Route::post('logout', [AuthController::class, 'logout'])->middleware(['auth:sanctum']);
+Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware(['auth:sanctum']);
 
 // Routes grouped under 'auth:api' middleware
-Route::middleware(['auth:api'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     
     // Admin (ITCC) routes
     Route::prefix('admin')->group(function () {
-        Route::post('/create-organizations', [AdminController::class, 'addOrganization']);
+        // Route::post('/create-organizations', [AdminController::class, 'addOrganization']);
         Route::get('/organizations', [AdminController::class, 'viewAllOrganizations']);
         Route::get('/organizations/{id}', [AdminController::class, 'viewSingleOrganization']);
         Route::post('/create-departments', [AdminController::class, 'createDepartment']);
