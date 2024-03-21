@@ -55,19 +55,11 @@ class AuthController extends Controller
     }
     public function logout(Request $request)
     {
-       // Get the authenticated user
-        $user = $request->user();
+        // Revoke the current user's token
+        $request->user()->currentAccessToken()->delete();
 
-        // Check if the user is authenticated
-        if ($user) {
-            // Revoke the token that was used to authenticate this request
-            $user->token()->delete();
-
-            return response()->json(['message' => 'Logged out successfully']);
-        } else {
-            // If the user is not authenticated, return an error response
-            return response()->json(['message' => 'No user is currently authenticated.'], 401);
-        }
+        // Logout successful, return success response
+        return response()->json(['message' => 'Logout successful'], 200);
     }
 }
 

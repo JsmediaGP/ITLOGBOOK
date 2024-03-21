@@ -16,7 +16,7 @@ class SupervisorController extends Controller
 
     // Register (update organization details such as email, phone, address)
     public function register(Request $request)
-    {
+    { 
         $request->validate([
             'organization_id' => 'required|exists:organizations,id',
             'email' => 'required|email|unique:organizations,email',
@@ -43,20 +43,38 @@ class SupervisorController extends Controller
     // View all students in their organization
     public function viewAllStudents()
     {
-        if(\request()->user()->role !== 'supervisor') {
-            return response()->json(['message' => 'You are not authorized to access this resource'], 401);
-        }
-        // $supervisor = auth()->user();
-        // $students = $supervisor->organization->students;
-        // return response()->json($students);
-        $supervisor = auth()->user();
-        $students = $supervisor->organization->students;
+        // Get the authenticated user
+        $user = auth()->user();
+                
+        // Log the user data for debugging
+        logger()->info('Authenticated user data: ' . json_encode($user));
 
-        if ($students->isEmpty()) {
-            return response()->json(['message' => 'No students found for this supervisor.'], 404);
+        // Check if the user is authenticated
+        if (!$user) {
+            return response()->json(['message' => 'Authentication failed'], 401);
         }
 
-        return response()->json($students);
+        // Log the organization ID of the authenticated user
+        logger()->info('Authenticated user organization ID: ' . $user->id);
+
+        // Check if the organization ID is retrieved correctly
+        if (!$user->id) {
+            return response()->json(['message' => 'Organization ID not found for the authenticated user'], 422);
+        }
+
+        // Retrieve all students associated with the company
+        $students = Student::where('organization_id', $user->id)->get();
+
+        // Log the number of students retrieved
+        logger()->info('Number of students retrieved: ' . $students->count());
+
+        // Return the list of students along with the organization ID
+        return response()->json([
+            'organization_id' => $user->organization_id,
+            'students' => $students
+        ], 200);
+         
+        
     }
 
     // View single student
@@ -71,7 +89,7 @@ class SupervisorController extends Controller
         $student = Student::findOrFail($id);
 
         // If the user is a supervisor, check if their organization ID matches the student's organization ID
-        if ($user->role === 'supervisor' && $user->organization_id !== $student->organization_id) {
+        if ($user->role === 'supervisor' && $user->id !== $student->organization_id) {
             return response()->json(['message' => 'You do not have the right privileges to view this student.'], 403);
         }
 
@@ -90,7 +108,7 @@ class SupervisorController extends Controller
         $student = Student::findOrFail($studentId);
 
         // Check if the authenticated user is a supervisor and if their organization ID matches the student's organization ID
-        if ($user->role === 'supervisor' && $user->organization_id !== $student->organization_id) {
+        if ($user->role === 'supervisor' && $user->id !== $student->organization_id) {
             return response()->json(['message' => 'You do not have the right privileges to view this student\'s logbook.'], 403);
         }
 
@@ -119,7 +137,7 @@ public function addCommentToLogbook(Request $request, $logbookId)
     $supervisor = auth()->user(); // Assuming the authenticated user is a supervisor
 
     // Check if the supervisor is authorized to comment on this logbook
-    if ($logbook->student->organization_id !== $supervisor->organization_id) {
+    if ($logbook->student->organization_id !== $supervisor->id) {
         return response()->json(['message' => 'Unauthorized'], 403);
     }
 
@@ -127,7 +145,7 @@ public function addCommentToLogbook(Request $request, $logbookId)
     $weekNumber = ceil($logbook->created_at->diffInDays(now()) / 7);
     $comment = Comment::create([
         'logbook_id' => $logbook->id,
-        'organization_id' => $supervisor->organization_id, // Include organization_id
+        'organization_id' => $supervisor->id, // Include organization_id
         'comment' => $request->comment,
         'week_number' => $weekNumber,
     ]);
