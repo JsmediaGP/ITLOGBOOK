@@ -84,7 +84,7 @@ class AdminController extends Controller
             return response()->json(['message' => 'You are not authorized to access this resource'], 401);
         }
          $student = Student::findOrFail($studentId);
-         $logbook = $student->logbooks()->latest()->get();
+         $logbook = $student->logbooks()->with('comments')->latest()->get();
          if($logbook->isEmpty()) {
             return response()->json(['message' => 'No logbook entries found for this student'], 404);
          }
