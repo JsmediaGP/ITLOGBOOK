@@ -45,6 +45,9 @@ class SupervisorController extends Controller
     {
         // Get the authenticated user
         $user = auth()->user();
+        if ($user->role === 'supervisor') {
+            return response()->json(['message' => 'You do not have the right privileges to view students.'], 403);
+        }
                 
         // Log the user data for debugging
         logger()->info('Authenticated user data: ' . json_encode($user));
@@ -81,10 +84,7 @@ class SupervisorController extends Controller
     public function viewSingleStudent($id)
     {
         $user = \request()->user();
-        // if ($user->role !== 'admin' && $user->role !== 'supervisor') {
-        //     return response()->json(['message' => 'You are not authorized to access this resource'], 401);
-        // }
-
+       
         // Retrieve the student
         $student = Student::findOrFail($id);
 
@@ -103,7 +103,7 @@ class SupervisorController extends Controller
     {
         $user = \request()->user();
         if($user->role !== 'admin' && $user->role !== 'supervisor') {
-            return response()->json(['message' => 'You are not authorized to access this resource'], 401);
+            return response()->json(['message' => 'You are not authorized to access this page'], 401);
         }
         $student = Student::findOrFail($studentId);
 
@@ -126,7 +126,7 @@ class SupervisorController extends Controller
 public function addCommentToLogbook(Request $request, $logbookId)
 {
     if(\request()->user()->role !== 'supervisor') {
-        return response()->json(['message' => 'You are not authorized to access this resource'], 401);
+        return response()->json(['message' => 'You are not authorized to access this page'], 401);
     }
 
     $request->validate([
@@ -138,7 +138,7 @@ public function addCommentToLogbook(Request $request, $logbookId)
 
     // Check if the supervisor is authorized to comment on this logbook
     if ($logbook->student->organization_id !== $supervisor->id) {
-        return response()->json(['message' => 'Unauthorized'], 403);
+        return response()->json(['message' => 'You do not have the right privileges to add comment to this student\'s logbook'], 403);
     }
 
     // Add comment to logbook for the current week

@@ -10,29 +10,11 @@ use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
 {
-     // Add Organization (excluding supervisor details)
-     public function addOrganization(Request $request)
-     {
-
-        if(\request()->user()->role!== 'admin') {
-            return response()->json(['message' => 'You are not authorized to access this resource'], 401);
-        }
-         $request->validate([
-             'name' => 'required|unique:organizations,name',
-         ]);
- 
-         $organization = Organization::create([
-             'name' => $request->name,
-         ]);
- 
-         return response()->json(['message' => 'Organization added successfully', 'organization' => $organization], 201);
-     }
- 
      // View All Organizations
      public function viewAllOrganizations()
      {
         if(\request()->user()->role!== 'admin') {
-            return response()->json(['message' => 'You are not authorized to access this resource'], 401);
+            return response()->json(['message' => 'You are not authorized to access this page'], 401);
         }
          $organizations = Organization::all();
          return response()->json($organizations);
@@ -42,7 +24,7 @@ class AdminController extends Controller
      public function viewSingleOrganization($id)
      {
         if(\request()->user()->role!== 'admin') {
-            return response()->json(['message' => 'You are not authorized to access this resource'], 401);
+            return response()->json(['message' => 'You are not authorized to access this page'], 401);
         }
          $organization = Organization::findOrFail($id);
          $studentsCount = $organization->students->count();
@@ -53,7 +35,7 @@ class AdminController extends Controller
      public function createDepartment(Request $request)
      {
         if(\request()->user()->role!== 'admin') {
-            return response()->json(['message' => 'You are not authorized to access this resource'], 401);
+            return response()->json(['message' => 'You are not authorized to access this page'], 401);
         }
          $request->validate([
              'name' => 'required|unique:departments,name',
@@ -70,7 +52,7 @@ class AdminController extends Controller
      public function viewAllStudents()
      {
         if(\request()->user()->role!== 'admin') {
-            return response()->json(['message' => 'You are not authorized to access this resource'], 401);
+            return response()->json(['message' => 'You are not authorized to access this page'], 401);
         }
 
          $students = Student::with('department')->get();
@@ -81,7 +63,7 @@ class AdminController extends Controller
      public function viewStudentLogbook($studentId)
      {
         if(\request()->user()->role !== 'admin' && \request()->user()->role !== 'supervisor') {
-            return response()->json(['message' => 'You are not authorized to access this resource'], 401);
+            return response()->json(['message' => 'You are not authorized to access this page'], 401);
         }
          $student = Student::findOrFail($studentId);
          $logbook = $student->logbooks()->with('comments')->latest()->get();

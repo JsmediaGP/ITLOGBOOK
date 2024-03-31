@@ -1,0 +1,34 @@
+Project: Digitalizing IT logbook
+
+Breakdown
+
+A. The admin which is serving as the ITCC(industrial training coordinator) will 
+1. View all organizations 
+2. View single organization (with number of students in their organization) 
+3. View students under an organization
+4. View all students (also by their department) 
+5. View a student logbook
+6. Create departments 
+
+
+B. The Industrial based supervisor will 
+1. Register but it's just updating the created organization name so the supervisor will fill the remaining details in C1
+2. Login with email and password 
+3. View all students in their  organization 
+4. View single student 
+5. View student logbook & add comment each week
+
+
+C. The student will
+1. Register with the following details: name, matric number, email, organization, password, department, duration (which will be either 3 months or 6 months) 
+2. Login with Email and password 
+3. Fill logbook with the following details: workdone for the day, attachment file, and current time stamp
+4. View logbook
+
+PS: The logbook filling will only be available based on the duration selected during registration 
+
+Department, organization ID, will be foreign key under student registration
+
+Also the industrial based supervisor comment serve as stamp for the student logbook and this is to be filled everyweek by the supervisor 
+
+

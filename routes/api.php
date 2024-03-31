@@ -33,7 +33,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     // Admin (ITCC) routes
     Route::prefix('admin')->group(function () {
-        // Route::post('/create-organizations', [AdminController::class, 'addOrganization']);
         Route::get('/organizations', [AdminController::class, 'viewAllOrganizations']);
         Route::get('/organizations/{id}', [AdminController::class, 'viewSingleOrganization']);
         Route::post('/create-departments', [AdminController::class, 'createDepartment']);

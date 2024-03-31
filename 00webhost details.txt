@@ -1,0 +1,13 @@
+website: uiitlogbook
+
+password: Ui.itlogbook@1
+
+Database
+Name: uiitlogbook
+username: uiitlogbook
+password: Uiitlogbook@1
+
+
+name: id21996023_uiitlogbook
+user: id21996023_uiitlogbook
+password: Uiitlogbook@1
