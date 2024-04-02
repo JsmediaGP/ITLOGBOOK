@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Supervisor;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,5 +18,9 @@ class Organization extends Model
     public function students()
     {
         return $this->hasMany(Student::class);
+    }
+    public function supervisors()
+    {
+        return $this->hasMany(Supervisor::class);
     }
 }

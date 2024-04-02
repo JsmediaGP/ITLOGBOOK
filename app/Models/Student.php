@@ -19,6 +19,11 @@ class Student extends Model
         return $this->belongsTo(Organization::class);
     }
 
+    public function supervisor()
+    {
+        return $this->belongsTo(Supervisor::class);
+    }
+
     public function department()
     {
         return $this->belongsTo(Department::class);

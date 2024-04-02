@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('organization_id');
+            $table->unsignedBigInteger('supervisor_id')->nullable();
             $table->enum('duration', ['3 months', '6 months'])->default('3 months');
             $table->string('password');
             $table->enum('role', ['student', 'admin','supervisor'])->default('student');
@@ -31,6 +32,8 @@ return new class extends Migration
 
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
             $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
+            $table->foreign('supervisor_id')->references('id')->on('supervisors')->onDelete('cascade');
+       
         });
     }
 

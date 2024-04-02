@@ -7,6 +7,7 @@ use App\Models\Student;
 use App\Models\Organization;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Supervisor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -49,6 +50,11 @@ class AuthController extends Controller
         $organization = Organization::where('email', $email)->first();
         if ($organization && Hash::check($password, $organization->password)) {
             return $organization;
+        }
+
+        $supervisor = Supervisor::where('email', $email)->first();
+        if ($supervisor && Hash::check($password, $supervisor->password)) {
+            return $supervisor;
         }
 
         return null;

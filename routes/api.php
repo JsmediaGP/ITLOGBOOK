@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\OrganizationController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\SupervisorController;
 
@@ -41,7 +42,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     // Industrial-based Supervisor routes
-    Route::prefix('organization')->group(function () {
+    Route::prefix('supervisor')->group(function () {
         // Route::post('/register', [SupervisorController::class, 'register']);
         Route::get('/students', [SupervisorController::class, 'viewAllStudents']);
         Route::get('/students/{id}', [SupervisorController::class, 'viewSingleStudent']);
@@ -55,6 +56,23 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/fill-logbook', [StudentController::class, 'fillLogbook']);
         Route::get('/logbook', [StudentController::class, 'viewLogbook']);
     });
+
+    Route::prefix('organization')->group(function () {
+        Route::post('/supervisors', [OrganizationController::class, 'viewSingleSupervisor']);
+        Route::post('/new-supervisor', [OrganizationController::class, 'newSupervisor']);
+        Route::get('/supervisor/{id}', [OrganizationController::class, 'viewSingleSupervisor']);
+        Route::get('/all-students', [OrganizationController::class, 'viewAllStudents']);
+        Route::post('/assign-student', [OrganizationController::class, 'assignStudentToSupervisor']);
+
+        
+       
+    });
+
+    
+    // Route::post('/supervisors', 'Api\SupervisorController@createSupervisor');
+    // Route::post('/supervisors/{supervisorId}/students/{studentId}', 'Api\SupervisorController@assignStudentToSupervisor');
+    // Route::get('/supervisors', 'Api\SupervisorController@viewAllSupervisorsWithStudentCount');
+    // Route::get('/students', 'Api\SupervisorController@viewAllStudentsInOrganization');
    
 });
 

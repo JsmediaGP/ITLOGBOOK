@@ -13,20 +13,13 @@ return new class extends Migration
     {
         Schema::create('organizations', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            // $table->string('supervisor_name');
-            // $table->string('supervisor_email')->unique();
-            // $table->string('address');
-            // $table->string('phone');
-            // $table->timestamps();
+          
             $table->string('name')->unique();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
-            $table->string('supervisor_name')->nullable();
-            $table->string('supervisor_email')->nullable();
             $table->string('password')->nullable();
-            $table->enum('role', ['student', 'admin', 'supervisor'])->default('supervisor');
+            $table->enum('role', ['student', 'admin', 'supervisor', 'organization'])->default('organization');
             $table->timestamps();
 
         }); 
