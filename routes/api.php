@@ -59,11 +59,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('organization')->group(function () {
         
-        Route::post('/supervisors', [OrganizationController::class, 'viewAllSupervisors']);
+        Route::get('/supervisors', [OrganizationController::class, 'viewAllSupervisors']);
         Route::post('/new-supervisor', [OrganizationController::class, 'newSupervisor']);
         Route::get('/supervisor/{id}', [OrganizationController::class, 'viewSingleSupervisor']);
         Route::get('/all-students', [OrganizationController::class, 'viewAllStudents']);
-        Route::post('/assign-student', [OrganizationController::class, 'assignStudentToSupervisor']);
+        Route::post('/assign-student/supervisors/{supervisorId}/students/{studentId}', [OrganizationController::class, 'assignStudentToSupervisor']);
 
         
        

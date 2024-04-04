@@ -63,7 +63,7 @@ class OrganizationController extends Controller
     }
 
     public function viewAllStudents(){
-        if(\request()->user()->role!== 'admin') {
+        if(\request()->user()->role!== 'organization') {
             return response()->json(['message' => 'You are not authorized to access this page'], 401);
         }
 
@@ -81,10 +81,10 @@ class OrganizationController extends Controller
     $supervisor = Supervisor::findOrFail($supervisorId);
     $student = Student::findOrFail($studentId);
 
-    if ($supervisor->organization_id !== $request->user()->id) {
+    if ($supervisor->organization_id !== $request->user()->id || $student->organization_id !== $request->user()->id ) {
         return response()->json(['message' => 'You are not authorized to assign this student'], 401);
     }
-
+    
     $student->supervisor_id = $supervisorId;
     $student->save();
 
