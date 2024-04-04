@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Student;
 use App\Models\Supervisor;
+use App\Models\Organization;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -89,6 +90,28 @@ class OrganizationController extends Controller
 
     return response()->json(['message' => 'Student assigned to supervisor successfully']);
 }
+
+// Register (update organization details such as email, phone, address)
+    public function updateOrganization(Request $request)
+    { 
+        $request->validate([
+            'organization_id' => 'required|exists:organizations,id',
+            'email' => 'required|email|unique:organizations,email',
+            'phone' => 'required|string',
+            'address' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        $organization = Organization::findOrFail($request->organization_id);
+        $organization->update([
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return response()->json(['message' => 'Organization details updated successfully', 'organization' => $organization]);
+    }
 
 
 

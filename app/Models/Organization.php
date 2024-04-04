@@ -13,7 +13,7 @@ class Organization extends Model
     
 
 
-    protected $fillable = ['name', 'email', 'phone', 'address', 'supervisor_name',  'password', 'supervisor_email', 'role'];
+    protected $fillable = ['name', 'email', 'phone', 'address',  'password', 'role'];
 
     public function students()
     {

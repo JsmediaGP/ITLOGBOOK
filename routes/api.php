@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 /// Authentication route
 Route::post('/auth/login', [AuthController::class, 'login']);
-Route::post('/organization/register', [SupervisorController::class, 'register']);
+Route::post('/organization/signup', [OrganizationController::class, 'updateOrganization']);
 Route::post('/student/register', [StudentController::class, 'register']);
 Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware(['auth:sanctum']);
 
@@ -58,7 +58,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::prefix('organization')->group(function () {
-        Route::post('/supervisors', [OrganizationController::class, 'viewSingleSupervisor']);
+        
+        Route::post('/supervisors', [OrganizationController::class, 'viewAllSupervisors']);
         Route::post('/new-supervisor', [OrganizationController::class, 'newSupervisor']);
         Route::get('/supervisor/{id}', [OrganizationController::class, 'viewSingleSupervisor']);
         Route::get('/all-students', [OrganizationController::class, 'viewAllStudents']);

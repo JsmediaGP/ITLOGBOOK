@@ -6,24 +6,34 @@ A. The admin which is serving as the ITCC(industrial training coordinator) will
 1. View all organizations 
 2. View single organization (with number of students in their organization) 
 3. View students under an organization
-4. View all students (also by their department) 
+4. View all students (also by their department), also with their supervisor
 5. View a student logbook
-6. Create departments 
+6. View Supervisors and number of Students under him/her
+
 
 
 B. The Industrial based supervisor will 
-1. Register but it's just updating the created organization name so the supervisor will fill the remaining details in C1
-2. Login with email and password 
-3. View all students in their  organization 
-4. View single student 
-5. View student logbook & add comment each week
+1. Login with email and password 
+2. View all students in their  organization 
+3. View single student 
+4. View student logbook & add comment each week
+
 
 
 C. The student will
 1. Register with the following details: name, matric number, email, organization, password, department, duration (which will be either 3 months or 6 months) 
-2. Login with Email and password 
+2. Login with Matric number and password 
 3. Fill logbook with the following details: workdone for the day, attachment file, and current time stamp
 4. View logbook
+
+D. Organization will
+1. Register but it will be updating the organization name that student has created 
+2. Login
+3. Create Supervisor(s) under their organization 
+4. Assign student(s) with Supervisor
+5. View all students in their organization
+6. View Supervisor(s) with number of students under them
+7. View a single student 
 
 PS: The logbook filling will only be available based on the duration selected during registration 
 
