@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use App\Models\Student;
+use App\Models\Supervisor;
 use App\Models\Organization;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\Supervisor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -53,9 +55,9 @@ class AuthController extends Controller
         }
 
         $supervisor = Supervisor::where('email', $email)->first();
-        if ($supervisor && Hash::check($password, $supervisor->password)) {
-            return $supervisor;
-        }
+       if ($supervisor && Hash::check($password, $supervisor->password)) {
+        return $supervisor;
+       }
 
         return null;
     }
@@ -67,4 +69,6 @@ class AuthController extends Controller
         // Logout successful, return success response
         return response()->json(['message' => 'Logout successful'], 200);
     }
+
+    
 }

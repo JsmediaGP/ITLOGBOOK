@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Comment;
 use App\Models\Logbook;
 use App\Models\Student;
+use App\Models\Supervisor;
 use App\Models\Organization;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -88,8 +89,8 @@ class SupervisorController extends Controller
         }
         $student = Student::findOrFail($studentId);
 
-        // Check if the authenticated user is a supervisor and if their organization ID matches the student's organization ID
-        if ($user->role === 'supervisor' && $user->id !== $student->organization_id) {
+        // Check if the authenticated user is a supervisor and if student's supervisor_id matches the supervisor_id itself
+        if ($user->role !== 'supervisor' || $user->id !== $student->supervisor_id) {
             return response()->json(['message' => 'You do not have the right privileges to view this student\'s logbook.'], 403);
         }
 
@@ -118,7 +119,7 @@ public function addCommentToLogbook(Request $request, $logbookId)
     $supervisor = auth()->user(); // Assuming the authenticated user is a supervisor
 
     // Check if the supervisor is authorized to comment on this logbook
-    if ($logbook->student->organization_id !== $supervisor->id) {
+    if ($logbook->student->supervisor_id !== $supervisor->id) {
         return response()->json(['message' => 'You do not have the right privileges to add comment to this student\'s logbook'], 403);
     }
 
@@ -126,13 +127,35 @@ public function addCommentToLogbook(Request $request, $logbookId)
     $weekNumber = ceil($logbook->created_at->diffInDays(now()) / 7);
     $comment = Comment::create([
         'logbook_id' => $logbook->id,
-        'organization_id' => $supervisor->id, // Include organization_id
+        'organization_id' => $supervisor->organization_id, // Include organization_id
         'comment' => $request->comment,
         'week_number' => $weekNumber,
     ]);
 
     return response()->json(['message' => 'Comment added successfully', 'comment' => $comment], 201);
 }
+
+public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+
+        $user = Supervisor::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => 'Invalid credentials',
+            ], 401);
+        }
+
+        $token = $user->createToken('authToken')->plainTextToken;
+
+        return response()->json([
+            'token' => $token,
+        ], 200);
+    }
 
 
 }

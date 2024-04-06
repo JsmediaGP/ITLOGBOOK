@@ -30,7 +30,7 @@ class OrganizationController extends Controller
         $supervisor->name = $request->input('name');
         $supervisor->email = $request->input('email');
         $supervisor->phone = $request->input('phone');
-        $supervisor->password = Hash::make($request->input('name'));
+        $supervisor->password = Hash::make($request->input('password'));
         $supervisor->organization_id = $user->id;
         $supervisor->save();
 
