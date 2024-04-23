@@ -7,6 +7,8 @@ use App\Models\Department;
 use App\Models\Organization;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\DepartmentSupervisor;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -32,21 +34,32 @@ class AdminController extends Controller
      }
  
      // Create Departments
-     public function createDepartment(Request $request)
+     public function departmentalSupervisors(Request $request)
      {
         if(\request()->user()->role!== 'admin') {
             return response()->json(['message' => 'You are not authorized to access this page'], 401);
         }
-         $request->validate([
-             'name' => 'required|unique:departments,name',
-         ]);
- 
-         $department = Department::create([
-             'name' => $request->name,
-         ]);
- 
-         return response()->json(['message' => 'Department created successfully', 'department' => $department], 201);
-     }
+        $request->validate([
+            'name'=> 'required|string',
+            'email'=> 'required|email|unique:departmentsupervisors',
+            'password'=>'required|string',
+            'phone'=>'required|string',
+            'department_id'=>'required|exists:departments,id'
+        ]);
+        
+
+        $department = new DepartmentSupervisor();
+        $department->name = $request->input('name');
+        $department->email = $request->input('email');
+        $department->phone = $request->input('phone');
+        $department->password = Hash::make($request->input('password'));
+        $department->department_id = $request->input('department_id');
+        $department->save();
+
+        return response()->json(['message'=>'New Supervisor Added Successfully', $department]);
+        
+    }
+     
  
      // View All Students (also by their department)
      public function viewAllStudents()
@@ -72,4 +85,15 @@ class AdminController extends Controller
          }
          return response()->json($logbook);
      }
+
+     public function viewAllDepartments(){
+        if(\request()->user()->role!== 'admin') {
+            return response()->json(['message' => 'You are not authorized to access this page'], 401);
+        }
+         $departments = Department::all();
+         return response()->json($departments);
+
+     }
+
+     
 }

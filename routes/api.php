@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 /// Authentication route
 Route::post('/auth/login', [AuthController::class, 'login']);
-Route::post('/auth/supervisor/login', [SupervisorController::class, 'login']);
+// Route::post('/auth/supervisor/login', [SupervisorController::class, 'login']);
 Route::post('/organization/signup', [OrganizationController::class, 'updateOrganization']);
 Route::post('/student/register', [StudentController::class, 'register']);
 Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware(['auth:sanctum']);
