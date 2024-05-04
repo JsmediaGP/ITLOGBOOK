@@ -24,11 +24,9 @@ class StudentController extends Controller
             'matric_number' => 'required|string|unique:students,matric_number',
             'email' => 'required|email|unique:students,email',
             'password' => 'required|string',
-            // 'department_id' => 'required|exists:departments,id',
             'department'=>'required|string',
-            // 'organization_id' => 'required|exists:organizations,id',
             'company_name' => 'required|string', // New field for company name
-            'duration' => 'required|in:3 months,6 months',
+            // 'duration' => 'required|in:3 months,6 months',
         ]);
 
         // Extract company name from the request data
@@ -61,7 +59,7 @@ class StudentController extends Controller
         $student->password = Hash::make($request->input('password'));
         $student->department_id = $department->id;
         $student->organization_id = $organization->id; // Associate with organization
-        $student->duration = $request->input('duration');
+        // $student->duration = $request->input('duration');
         $student->save();
 
         

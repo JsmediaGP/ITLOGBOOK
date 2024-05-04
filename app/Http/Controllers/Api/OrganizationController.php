@@ -39,13 +39,20 @@ class OrganizationController extends Controller
     }
 
     public function viewAllSupervisors(){
-        if(\request()->user()->role!== 'organization') {
+        if(\request()->user()->role !== 'organization') {
             return response()->json(['message' => 'You are not authorized to access this page'], 401);
         }
-         $supervisors = Supervisor::all();
-         return response()->json($supervisors);
-
+    
+        // Get the organization ID of the currently authenticated user
+        $organizationId = \request()->user()->id;
+    
+        // Filter supervisors based on the organization ID
+        $supervisors = Supervisor::where('organization_id', $organizationId)->get();
+    
+        return response()->json($supervisors);
     }
+
+    
     //single supervisor with number of students
     public function viewSingleSupervisor($id){
 

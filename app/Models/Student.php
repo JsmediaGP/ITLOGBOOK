@@ -12,7 +12,7 @@ class Student extends Model
 
    
 
-    protected $fillable = ['name', 'matric_number', 'email', 'password', 'department_id', 'organization_id', 'duration', 'role'];
+    protected $fillable = ['name', 'matric_number', 'email', 'password', 'department_id', 'organization_id', 'role'];
 
     public function organization()
     {
