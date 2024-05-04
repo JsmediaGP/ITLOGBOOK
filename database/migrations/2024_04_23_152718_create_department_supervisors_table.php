@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('_department_supervisors', function (Blueprint $table) {
+        Schema::create('department_supervisors', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('department_id');
             $table->string('name');
+            $table->unsignedBigInteger('department_id');
             $table->string('email')->unique();
             $table->string('phone')->unique();
             $table->string('password');
-            $table->foreign('department_id')->references('id')->on('department')->onDelete('cascade');
+            // $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
             $table->enum('role', ['student', 'admin','supervisor', 'organization', 'department'])->default('department');
             $table->timestamps();
         });
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('_department_supervisors');
+        Schema::dropIfExists('department_supervisors');
     }
 };

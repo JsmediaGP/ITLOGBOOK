@@ -13,7 +13,7 @@ class Supervisor extends Model
 {
     // use HasApiTokens, HasFactory;
     use HasFactory, Notifiable, HasApiTokens;
-    protected $fillable = ['name', 'email', 'phone', 'password', 'organization_id'];
+    protected $fillable = ['name', 'email', 'phone', 'password', 'organization_id', 'role'];
     protected $hidden = [
         'password',
         'remember_token',

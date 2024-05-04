@@ -95,5 +95,15 @@ class AdminController extends Controller
 
      }
 
+     public function viewAllDepartmentalSupervisors(){
+        if(\request()->user()->role!== 'admin') {
+            return response()->json(['message' => 'You are not authorized to access this page'], 401);
+        }
+         $Dsupervisors = DepartmentSupervisor::all();
+         return response()->json($Dsupervisors);
+
+     }
+     
+
      
 }

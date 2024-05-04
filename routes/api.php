@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\DepartmentalSupervisorController;
 use App\Http\Controllers\Api\OrganizationController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\SupervisorController;
@@ -37,9 +38,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('admin')->group(function () {
         Route::get('/organizations', [AdminController::class, 'viewAllOrganizations']);
         Route::get('/organizations/{id}', [AdminController::class, 'viewSingleOrganization']);
-        Route::post('/create-departments', [AdminController::class, 'createDepartment']);
         Route::get('/students', [AdminController::class, 'viewAllStudents']);
         Route::get('/students/{id}/logbook', [AdminController::class, 'viewStudentLogbook']);
+        Route::post('/new-departmentalSupervisor', [AdminController::class, 'departmentalSupervisors']);
+        Route::get('/alldepartmentsupervisors', [AdminController::class, 'viewAllDepartmentalSupervisors']);
+        Route::get('/alldepartments', [AdminController::class, 'viewAllDepartments']);
     });
 
     // Industrial-based Supervisor routes
@@ -69,6 +72,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
         
        
     });
+
+    Route::prefix('Department')->group(function () {
+        // Route::post('/register', [StudentController::class, 'register']);
+        Route::get('/student-logbook/students/{id}/logbook', [DepartmentalSupervisorController::class, 'viewStudentLogbook']);
+        Route::get('/allstudents', [DepartmentalSupervisorController::class, 'allStudents']);
+        Route::get('/logbook/export/csv/students/{id}', [DepartmentalSupervisorController::class, 'exportStudentLogbookCsv']);
+
+    
+
+    });
+
 
     
     // Route::post('/supervisors', 'Api\SupervisorController@createSupervisor');

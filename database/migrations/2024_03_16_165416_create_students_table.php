@@ -25,7 +25,6 @@ return new class extends Migration
             $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('organization_id');
             $table->unsignedBigInteger('supervisor_id')->nullable();
-            $table->enum('duration', ['3 months', '6 months'])->default('3 months');
             $table->string('password');
             $table->enum('role', ['student', 'admin','supervisor'])->default('student');
             $table->timestamps();

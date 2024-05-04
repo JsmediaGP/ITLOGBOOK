@@ -9,6 +9,7 @@ use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\DepartmentSupervisor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -58,6 +59,11 @@ class AuthController extends Controller
        if ($supervisor && Hash::check($password, $supervisor->password)) {
         return $supervisor;
        }
+
+       $department = DepartmentSupervisor::where('email', $email)->first();
+        if ($department && Hash::check($password, $department->password)) {
+            return $department;
+        }
 
         return null;
     }
